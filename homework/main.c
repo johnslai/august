@@ -1,5 +1,4 @@
 // main is the test program
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <assert.h>
