@@ -5,63 +5,88 @@
 #include <assert.h>
 #include "llist.h"
 
-bool testInsert0()
+struct _TNode {
+  unsigned int value;
+  struct _TNode * next;
+};
+
+void testInsert0()
 {
-  TNode * p = NULL;
+  TLlist p = NULL;
   printf("%s\n", __FUNCTION__);
-  p = llistInsert(p, 10);
+  if (ERR == llistInsert(&p, 5)) goto cleanup;
   assert(p);
-  assert(p->value == 10);
+  assert(p->value == 5);
   assert(p->next == NULL);
   llistPrint(p);
-  return true;
+cleanup:
+  llistDestroy(&p);
 }
 
-bool testInsert1()
+void testInsert1()
 {
-  TNode * p = NULL;
+  TLlist p = NULL;
   printf("%s\n", __FUNCTION__);
-  p = llistInsert(p, 10);
-  p = llistInsert(p, 5);
+  if (ERR == llistInsert(&p, 10)) goto cleanup;
+  if (ERR == llistInsert(&p, 5)) goto cleanup;
   assert(p->value ==5);
   assert(p->next->value==10);
   llistPrint(p);
-  return true;
+cleanup:
+  llistDestroy(&p);
 }
 
-bool testInsert2()
+void testInsert2()
 {
-  TNode * p = NULL;
+  TLlist p = NULL;
   printf("%s\n", __FUNCTION__);
-  p = llistInsert(p, 10);
-  p = llistInsert(p, 4);
-  p = llistInsert(p, 5);
+  if (ERR == llistInsert(&p, 10)) goto cleanup;
+  if (ERR == llistInsert(&p, 4)) goto cleanup;
+  if (ERR == llistInsert(&p, 5)) goto cleanup;
   assert(p->value ==4);
   assert(p->next->value ==5);
   assert(p->next->next->value ==10);
   llistPrint(p);
-  return true;
+cleanup:
+  llistDestroy(&p);
 }
 
-bool testInsert3()
+void testInsert3()
 {
-  TNode * p = NULL;
+  TLlist p = NULL;
   printf("%s\n", __FUNCTION__);
-  p = llistInsert(p, 4);
-  p = llistInsert(p, 5);
+  if (ERR == llistInsert(&p, 4)) goto cleanup;
+  if (ERR == llistInsert(&p, 5)) goto cleanup;
   assert(p->value ==4);
   assert(p->next->value ==5);
   llistPrint(p);
-  return true;
+cleanup:
+  llistDestroy(&p);
 }
 
-bool testx()
+// a test template
+void testx()
 {
-  return false;
+  TLlist p = NULL;
+  printf("%s\n", __FUNCTION__);
+  // setup
+
+  // unit test
+  if (ERR == llistInsert(&p, 5)) goto cleanup;
+
+  // assert
+  assert(p->value == 5);
+  assert(p->next == NULL);
+
+  // print
+  llistPrint(p);
+cleanup:
+  llistDestroy(&p);
 }
 
 int main()
 {
+  testPool();
   testInsert0();
   testInsert1();
   testInsert2();

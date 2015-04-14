@@ -10,3 +10,10 @@ assert.h is included for testing only.
 Compile and Run
 ---------------
 `gcc main.c llist.c; ./a.out`
+
+Test Cases
+----------
+Test cases are created by building up an ordered linked list with
+llistInsert(), then a new value = 5 is inserted.
+final linked list is printed, and results are verified with assert().
+

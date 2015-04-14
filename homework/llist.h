@@ -3,13 +3,10 @@ typedef enum _TLlistStatus {
   ERR=1,
 } TStatus;
 
-typedef struct _TNode {
-  unsigned int value;
-  struct _TNode * next;
-} TNode;
-
+typedef struct _TNode TNode;
 typedef TNode * TLlist;
 
-// init function before using this linkList lib
-TLlist llistInsert(TLlist list, unsigned int value);
+TStatus llistInsert(TLlist *list, unsigned int value);
+TStatus llistDestroy(TLlist *list);
 void llistPrint(TLlist p);
+void testPool();
