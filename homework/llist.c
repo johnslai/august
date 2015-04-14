@@ -18,7 +18,7 @@ typedef struct {
 } TNodePool;
 static TNodePool pool;
 
-void poolPrint(TNodePool * p)
+static void poolPrint(TNodePool * p)
 {
   printf("pool address:\n");
   for (int i=0; i< iPoolSize; i++) 
@@ -26,7 +26,7 @@ void poolPrint(TNodePool * p)
 }
 
 // initialize a pool
-void poolInit(TNodePool * p)
+static void poolInit(TNodePool * p)
 {
   // initialize
   p->numAvail = iPoolSize;
@@ -34,7 +34,7 @@ void poolInit(TNodePool * p)
   //poolPrint(p);
 }
 
-unsigned int searchNextAvail(TNodePool * p)
+static unsigned int searchNextAvail(TNodePool * p)
 {
   int i = p->nextAvail;
   if (!p->numAvail) return i; // pool full, just return something
@@ -45,7 +45,7 @@ unsigned int searchNextAvail(TNodePool * p)
   return i;
 }
 
-TLlist newNode()
+static TLlist newNode()
 {
   static int isFirst = 1;
   TLlist node;
@@ -68,7 +68,7 @@ TLlist newNode()
   return node;
 }
 
-void freeNode(TLlist node)
+static void freeNode(TLlist node)
 {
   if (node && node->used) {
     int i;
