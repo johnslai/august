@@ -38,10 +38,10 @@ unsigned int searchNextAvail(TNodePool * p)
 {
   int i = p->nextAvail;
   if (!p->numAvail) return i; // pool full, just return something
-  do {
+  while (p->pool[i].used) {
     i=(i+1)%iPoolSize;
     assert(i != p->nextAvail); // infinite loop detected
-  } while (p->pool[i].used);
+  }
   return i;
 }
 
@@ -58,13 +58,12 @@ TLlist newNode()
     printf("no more nodes available\n");
     return NULL;
   }
+  // search for next available node
+  p->nextAvail = searchNextAvail(p);
   // node to be returned
-  unsigned int nextAvail = p->nextAvail;
-  node = p->pool + nextAvail;
+  node = p->pool + p->nextAvail;
   node->used = 1;
   p->numAvail--;
-  // search for next available node, could be done in background
-  if (p->numAvail) p->nextAvail = searchNextAvail(p);
 
   return node;
 }
@@ -139,15 +138,21 @@ void testPool()
   printf("%s\n", __FUNCTION__);
   assert(pool.nextAvail == 0);
   TNode * a = newNode();
-  assert(pool.nextAvail == 1);
+  assert(pool.nextAvail == 0);
   TNode * b = newNode();
-  assert(pool.nextAvail == 2);
+  assert(pool.nextAvail == 1);
   freeNode(b);
   TNode * c = newNode();
-  assert(pool.nextAvail == 3);
+  assert(pool.nextAvail == 1);
+  freeNode(a);
   TNode * d = newNode();
-  assert(pool.nextAvail == 1);
+  assert(pool.nextAvail == 2);
   TNode * e = newNode();
-  assert(pool.nextAvail == 1);
-  freeNode(a); freeNode(b); freeNode(c); freeNode(d); freeNode(e);
+  assert(pool.nextAvail == 3);
+  TNode * f = newNode();
+  assert(pool.nextAvail == 0);
+  freeNode(d);
+  TNode * g = newNode();
+  assert(pool.nextAvail == 2);
+  freeNode(b); freeNode(c); freeNode(e); freeNode(f); freeNode(g);
 }
