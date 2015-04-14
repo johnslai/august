@@ -5,7 +5,7 @@
 const int iPoolSize = 4;
 
 struct _TNode {
-  unsigned int value;
+  unsigned long value;
   struct _TNode * next;
   // internal fields for pool management
   unsigned char used: 1; // checked if already allocated
@@ -77,7 +77,7 @@ static void freeNode(TLlist node)
   }
 }
 
-TStatus llistInsert(TLlist *list, unsigned int value)
+TStatus llistInsert(TLlist *list, unsigned long value)
 {
   TLlist p = *list;
   // create new node and store value
@@ -125,7 +125,7 @@ void llistPrint(TLlist p)
 {
   int i=0;
   while(p) {
-    printf("%u ", p->value);
+    printf("%lu ", p->value);
     if (p->next) printf("-> ");
     if (i++ %8 ==7 ) printf("\n");
     p= p->next;
