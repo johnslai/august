@@ -41,36 +41,29 @@ TLlist llistInsert(TLlist list, unsigned int value)
   TLlist p = list;
   // create new node and store value
   TLlist new = getNode();
-  if (!new) return list;
+  if (!new) return list; // todo: return error
   new->value = value;
 
-  if (!p) {
-    // case 0: create list
-    list = new;
-    return list;
+  if (!p || p->value >= value) {
+    // case 0: empty list -> create list
+    // case 1: insert at head
+    new->next = p;
+    p = new;
+    return p;
   }
-  TLlist prev = NULL;
+  // traverse list
   while (p) {
-    if (p->value >= value) {
-      if (!prev) {
-        // case 1: insert at head
-        list = new;
-        new->next = p;
-      } else {
-        // case 2: (normal case) insert between prev and p
-        prev->next = new;
-        new->next = p;
-      }
+    if (!p->next || p->next->value >= value) {
+      // case 2: (normal case) insert between p and p->next
+      // case 3: (terminal case) reached end of list
+      new->next = p->next;
+      p->next = new;
       return list;
     }
-
-    prev = p;
     p = p->next;
   }
-  // case 3: (terminal case) reached end of list
-  prev->next = new;
-  new->next = p;
-  return list;
+  // something is wrong, should not reach here
+  return NULL;
 }
 
 void llistPrint(TLlist p)
